@@ -1,0 +1,13 @@
+((synopsis "A binding for NanoVG, the antialiased vector graphics rendering library for OpenGL")
+ (category graphics)
+ (license "BSD")
+ (author "Daniel J. Leslie")
+ (build-dependencies make foreigners)
+ (dependencies srfi-4 srfi-1)
+ (foreign-dependencies glew)
+ (platform (or linux windows macosx))
+ ; (component-options (csc-options -L -lexif) )
+                    ; (link-options "-L" "`pkg-config --libs dbus-1`"))
+ (components
+  (extension nanovg-gl3 (link-options -L -lGL)))
+ (version "1.0.2"))

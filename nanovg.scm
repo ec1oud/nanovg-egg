@@ -1,7 +1,18 @@
 ;; -*- geiser-scheme-implementation: 'chicken -*-
 
-(import foreign srfi-4 srfi-1)
-(require-extension srfi-4 srfi-1)
+(cond-expand
+  (chicken-5
+   (import (chicken base)
+           (chicken foreign)
+           (chicken format)
+           (chicken syntax)
+           (chicken gc)
+           (chicken condition)
+           (chicken pretty-print)
+           (srfi 4)))
+  (else
+   (import foreign srfi-4 srfi-1)
+   (require-extension srfi-4 srfi-1)))
 
 (foreign-declare #<<ENDC
 
@@ -68,7 +79,7 @@ ENDC
 
 (define create-context*
   (cond-expand
-    (nanovg-gl2 
+    (nanovg-gl2
      (foreign-lambda* context ((int flags)) "C_return((intptr_t)nvgCreateGL2(flags));"))
     (nanovg-gl3
      (foreign-lambda* context ((int flags)) "C_return((intptr_t)nvgCreateGL3(flags));"))
@@ -550,7 +561,7 @@ C_return(count);")
 	 (gp-maxx
 	  (foreign-lambda* float ((glyph-position gp) (integer offset)) "C_return(gp[offset].maxx);")))
     (map
-     (lambda (idx)	     
+     (lambda (idx)
        (make-glyph-position
 	(gp-index buf-loc idx)
 	(gp-x buf-loc idx)
